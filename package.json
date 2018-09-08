@@ -1,0 +1,18 @@
+{
+  "name": "puppeteer-gcp-cloudfunctions",
+  "version": "1.0.0",
+  "description": "Open-source project about end-to-end testing as a service",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Dimitri DERTHE",
+  "license": "Mozilla Public License Version 2.0",
+  "dependencies": {
+    "@google-cloud/storage": "^2.0.0",
+    "@types/google-cloud__storage": "^1.7.2",
+    "puppeteer": "^1.6.2",
+    "puppeteer-har": "^1.0.2",
+    "uuid": "^3.3.2"
+  }
+}
