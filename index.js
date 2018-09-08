@@ -6,7 +6,7 @@ const uuidv5 = require('uuid/v5');
 
 // Creates a client
 const storage = new Storage();
-const bucketsList;
+var bucketsList = [];
 
 let page;
 
