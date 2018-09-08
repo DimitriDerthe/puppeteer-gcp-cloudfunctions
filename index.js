@@ -16,18 +16,15 @@ async function getBrowserPage() {
   return browser.newPage();
 }
 
+//Google Storage upload function
 async function uploadFile(bucketName,datas){
   // Uploads files to bucket
   datas.forEach(fileName => {
     storage
       .bucket(bucketName)
       .upload(fileName, {
-        // Support for HTTP requests made with `Accept-Encoding: gzip`
         gzip: true,
         metadata: {
-          // Enable long-lived HTTP caching headers
-          // Use only if the contents of the file will never change
-          // (If the contents will change, use cacheControl: 'no-cache')
           cacheControl: 'public, max-age=31536000',
         },
       })
@@ -40,12 +37,14 @@ async function uploadFile(bucketName,datas){
   });  
 }
 
+//Google Storage check buckets function
 async function toStorage(bucketName,datas){
   //List buckets
   storage
     .getBuckets()
     .then(results => {
       const buckets = results[0];
+      
       //List all buckets
       console.log('Buckets:');
       buckets.forEach(bucket => {
@@ -76,41 +75,55 @@ async function toStorage(bucketName,datas){
     });
 }
 
+//Google Cloud Functions End-to-End testing
 exports.screenshot = async (req, res) => {
+  //Get URL to test
   const url = req.query.url;
+  //Generate an UUID for the url
   const uuid = uuidv5(url, uuidv5.URL);
+  //Generate a timestamp
   const timestamp = Date.now();
+  //Declare the path where to store the screenshot and HAR files.
   const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
   const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
 
+  //Check if the url parameter is set
   if (!url) {
     return res.send('Please provide URL as GET parameter, for example: <a href="?url=https://example.com">?url=https://example.com</a>');
   }
-
   if (!page) {
     page = await getBrowserPage();
 
   }
+
+  //Define the resolution screen to simulate
   await page.setViewport({
       width: 1920,
       height: 1080
   })
   
+  //Start HAR trace
   const har = new PuppeteerHar(page);
   await har.start({ path: harFile });
 
+  //Start navigation
   await page.goto(url);
   const performanceTiming = JSON.parse(
     await page.evaluate(() => JSON.stringify(window.performance.timing))
   )
+  
+  //Stop HAR trace
   await har.stop();
+
+  //Take a screenshot
   await page.screenshot({
     path: img,
     fullPage: true
   })
 
+  //Upload data to Google Cloud Storage
   toStorage(uuid, [harFile,img]);
   
-  res.send(performanceTiming);
-  //res.send(data);  
+  //Send performance timing to the client
+  res.send(performanceTiming);  
 };
