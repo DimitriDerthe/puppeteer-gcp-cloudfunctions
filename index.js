@@ -36,8 +36,11 @@ async function toStorage(bucketName,datas){
     .getBuckets()
     .then(results => {
       const buckets = results[0];
+      console.log("content of buckets: "+buckets);
+      bucketsListName = buckets.name;
+      console.log("content of bucketsListName: "+bucketsListName);
       //Check if bucket don't exist then create it
-      if (buckets.indexOf(bucketName) == -1){
+      if (bucketsListName.indexOf(bucketName) == -1){
         storage
         .createBucket(bucketName)
         .then(() => {
