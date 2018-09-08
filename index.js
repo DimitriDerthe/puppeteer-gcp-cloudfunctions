@@ -76,7 +76,7 @@ async function toStorage(bucketName,datas){
 }
 
 //Google Cloud Functions End-to-End testing
-exports.screenshot = async (req, res) => {
+exports.webcheck = async (req, res) => {
   //Get URL to test
   const url = req.query.url;
   //Generate an UUID for the url
