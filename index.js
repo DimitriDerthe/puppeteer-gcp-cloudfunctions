@@ -50,6 +50,7 @@ async function toStorage(bucketName,datas){
       }
       else{
         //Bucket exist then upload data
+        console.log(`Bucket ${bucketName} already exist.`);
         uploadFile(bucketName,datas);
       }
     })
