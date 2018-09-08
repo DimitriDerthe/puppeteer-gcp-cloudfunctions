@@ -21,7 +21,16 @@ async function uploadFile(bucketName,datas){
   datas.forEach(fileName => {
     storage
       .bucket(bucketName)
-      .upload(fileName)
+      .upload(fileName, {
+        // Support for HTTP requests made with `Accept-Encoding: gzip`
+        gzip: true,
+        metadata: {
+          // Enable long-lived HTTP caching headers
+          // Use only if the contents of the file will never change
+          // (If the contents will change, use cacheControl: 'no-cache')
+          cacheControl: 'public, max-age=31536000',
+        },
+      })
       .then(() => {
         console.log(`${fileName} uploaded to ${bucketName}.`);
       })
