@@ -17,7 +17,7 @@ async function getBrowserPage() {
 }
 
 //Google Storage upload function
-async function uploadFile(bucketName,datas){
+function uploadFile(bucketName,datas){
   // Uploads files to bucket
   datas.forEach(fileName => {
     storage
@@ -38,7 +38,7 @@ async function uploadFile(bucketName,datas){
 }
 
 //Google Storage check buckets function
-async function toStorage(bucketName,datas){
+function toStorage(bucketName,datas){
   //List buckets
   storage
     .getBuckets()
