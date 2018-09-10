@@ -98,8 +98,8 @@ exports.webcheck = async (req, res) => {
 
   //Define the resolution screen to simulate
   await page.setViewport({
-      width: 1920,
-      height: 1080
+      width: 1440,
+      height: 900
   })
   
   //Start HAR trace
