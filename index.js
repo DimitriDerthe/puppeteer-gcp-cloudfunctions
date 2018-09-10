@@ -28,7 +28,6 @@ function uploadFile(bucketName,datas){
           cacheControl: 'public, max-age=31536000',
         },
       })
-      .destination('test')
       .then(() => {
         console.log(`${fileName} uploaded to ${bucketName}.`);
       })
