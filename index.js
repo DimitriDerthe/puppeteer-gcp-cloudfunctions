@@ -35,7 +35,7 @@ function uploadFile(bucketName,datas){
         console.error('ERROR:', err);
       });    
   });  
-}
+} 
 
 //Google Storage check buckets function
 function toStorage(bucketName,datas){
