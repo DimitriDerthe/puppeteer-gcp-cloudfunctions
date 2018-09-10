@@ -117,8 +117,7 @@ exports.webcheck = async (req, res) => {
 
   //Take a screenshot
   await page.screenshot({
-    path: img,
-    fullPage: true
+    path: img
   })
 
   //Upload data to Google Cloud Storage
