@@ -22,7 +22,7 @@ function uploadFile(bucketName,datas){
   datas.forEach(fileName => {
     storage
       .bucket(bucketName)
-      .upload(fileName, {
+      .upload('test/'+fileName, {
         gzip: true,
         metadata: {
           cacheControl: 'public, max-age=31536000',
