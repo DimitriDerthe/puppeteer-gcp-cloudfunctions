@@ -18,7 +18,7 @@ let page;
 
 async function getBrowserPage() {
   // Launch headless Chrome. Turn off sandbox so Chrome can run under root.
-  const browser = await puppeteer.launch({args: ['--no-sandbox']});
+  const browser = await puppeteer.launch({args: ['--no-sandbox'],ignoreHTTPSErrors: true});
   return browser.newPage();
 }
 
