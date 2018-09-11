@@ -67,7 +67,7 @@ function toStorage(bucketsList,bucketName,datas){
 }
 
 //Google Storage list buckets
-function listBuckets(){
+async function listBuckets(){
   //List buckets
   storage
     .getBuckets()
@@ -90,7 +90,7 @@ function listBuckets(){
 //Google Cloud Functions Webcheck
 exports.webcheck = async (req, res) => {
   //Get buckets list
-  bucketsList = listBuckets();
+  buckets = listBuckets();
   //Get URL to test
   const url = req.query.url;
   //Generate an UUID for the url
@@ -135,7 +135,7 @@ exports.webcheck = async (req, res) => {
   })
 
   //Upload data to Google Cloud Storage
-  toStorage(bucketsList, uuid, [harFile,img]);
+  toStorage(buckets, uuid, [harFile,img]);
   
   //Send performance timing to the client
   res.send(performanceTiming);  
