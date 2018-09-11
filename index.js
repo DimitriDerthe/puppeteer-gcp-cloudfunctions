@@ -42,7 +42,7 @@ function toStorage(bucketsList,bucketName,datas){
   //List buckets
   storage
     .getBuckets()
-    .then(() => {
+    .then(results => {
       //Check if bucket don't exist then create it
       if (bucketsList.indexOf(bucketName) == -1){
         storage
