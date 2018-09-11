@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Open-source project about end-to-end testing as a service",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
   "author": "Dimitri DERTHE",
   "license": "Mozilla Public License Version 2.0",
   "dependencies": {
