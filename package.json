@@ -13,6 +13,7 @@
     "@types/google-cloud__storage": "^1.7.2",
     "puppeteer": "^1.6.2",
     "puppeteer-har": "^1.0.2",
+    "resemblejs": "^2.10.3",
     "uuid": "^3.3.2"
   }
 }

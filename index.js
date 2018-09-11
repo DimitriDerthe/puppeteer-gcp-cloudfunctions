@@ -3,6 +3,7 @@ const {Storage} = require('@google-cloud/storage');
 const puppeteer = require('puppeteer');
 const PuppeteerHar = require('puppeteer-har');
 const uuidv5 = require('uuid/v5');
+const regression = require("resemblejs/compareImages");
 
 // Creates a client
 const storage = new Storage();
@@ -17,7 +18,7 @@ async function getBrowserPage() {
 }
 
 //Google Storage upload function
-function uploadFile(bucketName,datas){
+async function uploadFile(bucketName,datas){
   // Uploads files to bucket
   datas.forEach(fileName => {
     storage
@@ -75,7 +76,37 @@ function toStorage(bucketName,datas){
     });
 }
 
-//Google Cloud Functions End-to-End testing
+function compareVisual(uuid,img){
+  const options = {
+    output: {
+        errorColor: {
+            red: 255,
+            green: 0,
+            blue: 255
+        },
+        errorType: "movement",
+        transparency: 0.3,
+        largeImageThreshold: 1200,
+        useCrossOrigin: false,
+        outputDiff: true
+    },
+    scaleToSameSize: true,
+    ignore: "antialiasing",
+    ignore: "color"
+  };
+
+  // The parameters can be Node Buffers
+  // data is the same as usual with an additional getBuffer() function
+  const data = await compareImages(
+      await fs.readFile("./demoassets/People.jpg"),
+      await fs.readFile("./demoassets/People2.jpg"),
+      options
+  );
+
+  await fs.writeFile("./output.png", data.getBuffer());
+}
+
+//Google Cloud Functions Webcheck
 exports.webcheck = async (req, res) => {
   //Get URL to test
   const url = req.query.url;
