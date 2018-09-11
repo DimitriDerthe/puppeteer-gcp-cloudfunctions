@@ -89,7 +89,7 @@ function toStorage(listBuckets,bucketName,datas){
     });
 }
 
-function compareVisual(uuid,img){
+/*function compareVisual(uuid,img){
   const options = {
     output: {
         errorColor: {
@@ -117,7 +117,7 @@ function compareVisual(uuid,img){
   );
 
   await fs.writeFile("./output.png", data.getBuffer());
-}
+}*/
 
 //Google Cloud Functions Webcheck
 exports.webcheck = async (req, res) => {
