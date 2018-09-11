@@ -6,5 +6,5 @@ steps:
   args: ['test']
   dir: 'functions/autodeploy'
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['beta', 'functions', 'deploy', 'puppeteer', 'HTTP']
+  args: ['beta', 'functions', 'deploy', 'puppeteer', 'http']
   dir: 'functions/autodeploy'
