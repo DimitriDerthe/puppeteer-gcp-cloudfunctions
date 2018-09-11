@@ -1,3 +1,9 @@
+////////////////////////////////////////////
+//                                        //
+//        Author : Dimitri DERTHE         //
+//                                        //
+////////////////////////////////////////////
+
 // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
 const puppeteer = require('puppeteer');
