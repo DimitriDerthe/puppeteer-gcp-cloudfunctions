@@ -90,7 +90,7 @@ function listBuckets(){
 //Google Cloud Functions Webcheck
 exports.webcheck = async (req, res) => {
   //Get buckets list
-  const bucketsList = listBuckets();
+  bucketsList = listBuckets();
   //Get URL to test
   const url = req.query.url;
   //Generate an UUID for the url
