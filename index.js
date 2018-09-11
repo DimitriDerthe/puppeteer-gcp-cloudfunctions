@@ -38,11 +38,20 @@ async function uploadFile(bucketName,datas){
 } 
 
 //Google Storage check buckets function
-function toStorage(bucketsList,bucketName,datas){
+function toStorage(bucketName,datas){
   //List buckets
   storage
     .getBuckets()
     .then(results => {
+      const buckets = results[0];
+      
+      //List all buckets
+      console.log('Buckets:');
+      buckets.forEach(bucket => {
+        console.log(bucket.name);
+        bucketsList.push(bucket.name);
+      });
+
       //Check if bucket don't exist then create it
       if (bucketsList.indexOf(bucketName) == -1){
         storage
@@ -66,31 +75,38 @@ function toStorage(bucketsList,bucketName,datas){
     });
 }
 
-//Google Storage list buckets
-async function listBuckets(){
-  //List buckets
-  storage
-    .getBuckets()
-    .then(results => {
-      const buckets = results[0];
-      
-      //List all buckets
-      console.log('Buckets:');
-      buckets.forEach(bucket => {
-        console.log(bucket.name);
-        bucketsList.push(bucket.name);
-      });
-      return bucketsList;
-    })
-    .catch(err => {
-      console.error('ERROR:', err);
-    });
+function compareVisual(uuid,img){
+  const options = {
+    output: {
+        errorColor: {
+            red: 255,
+            green: 0,
+            blue: 255
+        },
+        errorType: "movement",
+        transparency: 0.3,
+        largeImageThreshold: 1200,
+        useCrossOrigin: false,
+        outputDiff: true
+    },
+    scaleToSameSize: true,
+    ignore: "antialiasing",
+    ignore: "color"
+  };
+
+  // The parameters can be Node Buffers
+  // data is the same as usual with an additional getBuffer() function
+  const data = await compareImages(
+      await fs.readFile("./demoassets/People.jpg"),
+      await fs.readFile("./demoassets/People2.jpg"),
+      options
+  );
+
+  await fs.writeFile("./output.png", data.getBuffer());
 }
 
 //Google Cloud Functions Webcheck
 exports.webcheck = async (req, res) => {
-  //Get buckets list
-  buckets = listBuckets();
   //Get URL to test
   const url = req.query.url;
   //Generate an UUID for the url
@@ -135,7 +151,7 @@ exports.webcheck = async (req, res) => {
   })
 
   //Upload data to Google Cloud Storage
-  toStorage(buckets, uuid, [harFile,img]);
+  toStorage(uuid, [harFile,img]);
   
   //Send performance timing to the client
   res.send(performanceTiming);  
