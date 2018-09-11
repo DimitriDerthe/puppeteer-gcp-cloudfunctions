@@ -3,7 +3,6 @@ const {Storage} = require('@google-cloud/storage');
 const puppeteer = require('puppeteer');
 const PuppeteerHar = require('puppeteer-har');
 const uuidv5 = require('uuid/v5');
-const regression = require("resemblejs/compareImages");
 
 // Creates a client
 const storage = new Storage();
