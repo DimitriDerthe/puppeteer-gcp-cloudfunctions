@@ -75,36 +75,6 @@ function toStorage(bucketName,datas){
     });
 }
 
-function compareVisual(uuid,img){
-  const options = {
-    output: {
-        errorColor: {
-            red: 255,
-            green: 0,
-            blue: 255
-        },
-        errorType: "movement",
-        transparency: 0.3,
-        largeImageThreshold: 1200,
-        useCrossOrigin: false,
-        outputDiff: true
-    },
-    scaleToSameSize: true,
-    ignore: "antialiasing",
-    ignore: "color"
-  };
-
-  // The parameters can be Node Buffers
-  // data is the same as usual with an additional getBuffer() function
-  const data = await compareImages(
-      await fs.readFile("./demoassets/People.jpg"),
-      await fs.readFile("./demoassets/People2.jpg"),
-      options
-  );
-
-  await fs.writeFile("./output.png", data.getBuffer());
-}
-
 //Google Cloud Functions Webcheck
 exports.webcheck = async (req, res) => {
   //Get URL to test
