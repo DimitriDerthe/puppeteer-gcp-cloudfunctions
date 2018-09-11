@@ -36,10 +36,10 @@ async function uploadFile(bucketName,datas){
         console.error('ERROR:', err);
       });    
   });  
-} 
+}
 
-//Google Storage check buckets function
-function toStorage(bucketName,datas){
+//Google storage list buckets
+function listBuckets(){
   //List buckets
   storage
     .getBuckets()
@@ -52,9 +52,22 @@ function toStorage(bucketName,datas){
         console.log(bucket.name);
         bucketsList.push(bucket.name);
       });
+      return bucketList
+    })
+    .catch(err => {
+      console.error('ERROR:', err);
+    });
+}
+
+//Google Storage check buckets function
+function toStorage(listBuckets,bucketName,datas){
+  //List buckets
+  storage
+    .getBuckets()
+    .then(() => {
 
       //Check if bucket don't exist then create it
-      if (bucketsList.indexOf(bucketName) == -1){
+      if (listBuckets.indexOf(bucketName) == -1){
         storage
         .createBucket(bucketName)
         .then(() => {
@@ -108,6 +121,8 @@ function compareVisual(uuid,img){
 
 //Google Cloud Functions Webcheck
 exports.webcheck = async (req, res) => {
+  //Start listing buckets
+  listBuckets = listBuckets();
   //Get URL to test
   const url = req.query.url;
   //Generate an UUID for the url
@@ -152,7 +167,7 @@ exports.webcheck = async (req, res) => {
   })
 
   //Upload data to Google Cloud Storage
-  toStorage(uuid, [harFile,img]);
+  toStorage(listBuckets,uuid, [harFile,img]);
   
   //Send performance timing to the client
   res.send(performanceTiming);  
