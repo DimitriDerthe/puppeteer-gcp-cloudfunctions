@@ -95,7 +95,7 @@ exports.webcheck = async (req, res) => {
     page = await getBrowserPage();
 
   }
-
+ 
   //Define the resolution screen to simulate
   await page.setViewport({
       width: 1920,
