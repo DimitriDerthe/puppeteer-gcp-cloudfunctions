@@ -16,6 +16,58 @@ var bucketsList = [];
 
 let page;
 
+//Google Cloud Functions Webcheck
+exports.webcheck = async (req, res) => {
+  //Get URL to test
+  const url = req.query.url;
+  //Generate an UUID for the url
+  const uuid = uuidv5(url, uuidv5.URL);
+  //Generate a timestamp
+  const timestamp = Date.now();
+  //Declare the path where to store the screenshot and HAR files.
+  const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
+  const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
+
+  //Check if the url parameter is set
+  if (!url) {
+    return res.send('Please provide URL as GET parameter, for example: <a href="?url=https://example.com">?url=https://example.com</a>');
+  }
+  if (!page) {
+    page = await getBrowserPage();
+
+  }
+ 
+  //Define the resolution screen to simulate
+  await page.setViewport({
+      width: 1920,
+      height: 1080
+  })
+  
+  //Start HAR trace
+  const har = new PuppeteerHar(page);
+  await har.start({ path: harFile });
+
+  //Start navigation
+  await page.goto(url);
+  const performanceTiming = JSON.parse(
+    await page.evaluate(() => JSON.stringify(window.performance.timing))
+  )
+  
+  //Stop HAR trace
+  await har.stop();
+
+  //Take a screenshot
+  await page.screenshot({
+    path: img
+  })
+
+  //Upload data to Google Cloud Storage
+  toStorage(uuid, [harFile,img]);
+  
+  //Send performance timing to the client
+  res.send(performanceTiming);  
+};
+
 async function getBrowserPage() {
   // Launch headless Chrome. Turn off sandbox so Chrome can run under root.
   const browser = await puppeteer.launch({args: ['--no-sandbox'],ignoreHTTPSErrors: true});
@@ -80,55 +132,3 @@ function toStorage(bucketName,datas){
       console.error('ERROR:', err);
     });
 }
-
-//Google Cloud Functions Webcheck
-exports.webcheck = async (req, res) => {
-  //Get URL to test
-  const url = req.query.url;
-  //Generate an UUID for the url
-  const uuid = uuidv5(url, uuidv5.URL);
-  //Generate a timestamp
-  const timestamp = Date.now();
-  //Declare the path where to store the screenshot and HAR files.
-  const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
-  const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
-
-  //Check if the url parameter is set
-  if (!url) {
-    return res.send('Please provide URL as GET parameter, for example: <a href="?url=https://example.com">?url=https://example.com</a>');
-  }
-  if (!page) {
-    page = await getBrowserPage();
-
-  }
- 
-  //Define the resolution screen to simulate
-  await page.setViewport({
-      width: 1920,
-      height: 1080
-  })
-  
-  //Start HAR trace
-  const har = new PuppeteerHar(page);
-  await har.start({ path: harFile });
-
-  //Start navigation
-  await page.goto(url);
-  const performanceTiming = JSON.parse(
-    await page.evaluate(() => JSON.stringify(window.performance.timing))
-  )
-  
-  //Stop HAR trace
-  await har.stop();
-
-  //Take a screenshot
-  await page.screenshot({
-    path: img
-  })
-
-  //Upload data to Google Cloud Storage
-  toStorage(uuid, [harFile,img]);
-  
-  //Send performance timing to the client
-  res.send(performanceTiming);  
-};
