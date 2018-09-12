@@ -1,8 +1,6 @@
 steps:
-- name: 'gcr.io/cloud-builders/git'
-  args: ['clone', 'https://github.com/DimitriDerthe/puppeteer-gcp-cloudfunctions.git']
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['install']  
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['beta', 'functions', 'deploy', 'webcheck', '--trigger-http']
   dir: 'functions/autodeploy'
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', 'https://github.com/DimitriDerthe/puppeteer-gcp-cloudfunctions.git']
