@@ -2,8 +2,4 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   args: ['clone', 'https://github.com/DimitriDerthe/puppeteer-gcp-cloudfunctions.git']
 - name: 'gcr.io/cloud-builders/gcloud'
-  args: ['beta', 'functions', 'deploy', 'webcheck', '--trigger-http', '--memory=1024M', '--runtime=nodejs8', '--region=us-central1']
-- name: 'gcr.io/cloud-builders/gcloud'
   args: ['beta', 'functions', 'deploy', 'webcheck', '--trigger-http', '--memory=1024M', '--runtime=nodejs8', '--region=europe-west1']
-- name: 'gcr.io/cloud-builders/gcloud'
-  args: ['beta', 'functions', 'deploy', 'webcheck', '--trigger-http', '--memory=1024M', '--runtime=nodejs8', '--region=asia-northeast1']   
