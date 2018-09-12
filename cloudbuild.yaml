@@ -1,13 +1,7 @@
 steps:
-- name: 'gcr.io/cloud-builders/git'
-  args: ['clone', 'https://github.com/DimitriDerthe/puppeteer-gcp-cloudfunctions.git']
-  env: ['PROJECT_ROOT=puppeteer']
-- name: 'gcr.io/cloud-builders/yarn'
-  args: ['install']
-  dir: 'functions/autodeploy'
-- name: 'gcr.io/cloud-builders/npm'
-  args: ['test']
-  dir: 'functions/autodeploy'
 - name: 'gcr.io/cloud-builders/gcloud'
   args: ['beta', 'functions', 'deploy', 'webcheck', '--trigger-http', '--runtime=nodejs8', '--memory=1024MB']
   dir: 'functions/autodeploy'
+- name: 'gcr.io/cloud-builders/git'
+  args: ['clone', 'https://github.com/DimitriDerthe/puppeteer-gcp-cloudfunctions.git']
+  env: ['PROJECT_ROOT=puppeteer']
