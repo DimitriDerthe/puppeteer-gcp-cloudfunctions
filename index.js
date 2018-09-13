@@ -7,8 +7,13 @@
 // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
 const puppeteer = require('puppeteer');
-const PuppeteerHar = require('puppeteer-har');
 const uuidv5 = require('uuid/v5');
+
+var getTraces = false;
+
+if(getTraces){
+  const PuppeteerHar = require('puppeteer-har');
+}
 
 // Creates a client
 const storage = new Storage();
@@ -25,9 +30,11 @@ exports.webcheck = async (req, res) => {
   //Generate a timestamp
   const timestamp = Date.now();
   //Declare the path where to store the screenshot and HAR files.
-  const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
-  const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
-
+  if(getTraces){
+    const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
+    const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
+  }
+  
   //Check if the url parameter is set
   if (!url) {
     return res.send('Please provide URL as GET parameter, for example: <a href="?url=https://example.com">?url=https://example.com</a>');
@@ -44,8 +51,10 @@ exports.webcheck = async (req, res) => {
   })
   
   //Start HAR trace
-  const har = new PuppeteerHar(page);
-  await har.start({ path: harFile });
+  if(getTraces){
+    const har = new PuppeteerHar(page);
+    await har.start({ path: harFile });
+  }
 
   //Start navigation
   await page.goto(url);
@@ -54,15 +63,21 @@ exports.webcheck = async (req, res) => {
   )
   
   //Stop HAR trace
-  await har.stop();
-
+  if(getTraces){
+    await har.stop();
+  }
+  
   //Take a screenshot
-  await page.screenshot({
-    path: img
-  })
+  if(getTraces){
+    await page.screenshot({
+      path: img
+    })
+  }
 
   //Upload data to Google Cloud Storage
-  toStorage(uuid, [harFile,img]);
+  if(getTraces){
+    toStorage(uuid, [harFile,img]);
+  }
   
   //Send performance timing to the client
   res.send(performanceTiming);  
