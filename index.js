@@ -6,7 +6,7 @@
 
 // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const uuidv5 = require('uuid/v5');
 
 //If set to true, take a screenshot and save the HAR trace
