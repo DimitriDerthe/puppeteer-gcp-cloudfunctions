@@ -22,7 +22,7 @@ var bucketsList = [];
 let page;
 
 //Google Cloud Functions Webcheck
-exports.webcheck = async (req, res) => {
+exports.webcheck = async (req, res) => { 
   //Get URL to test
   const url = req.query.url;
   //Generate an UUID for the url
@@ -86,7 +86,9 @@ exports.webcheck = async (req, res) => {
 async function getBrowserPage() {
   // Launch headless Chrome. Turn off sandbox so Chrome can run under root.
   const browser = await puppeteer.launch({args: ['--no-sandbox'],ignoreHTTPSErrors: true});
+  await page.setExtraHTTPHeaders(headers);
   return browser.newPage();
+
 }
 
 //Google Storage upload function
