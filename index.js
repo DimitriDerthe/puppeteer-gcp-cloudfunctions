@@ -86,7 +86,6 @@ exports.webcheck = async (req, res) => {
 async function getBrowserPage() {
   // Launch headless Chrome. Turn off sandbox so Chrome can run under root.
   const browser = await puppeteer.launch({args: ['--no-sandbox'],ignoreHTTPSErrors: true});
-  await page.setExtraHTTPHeaders(headers);
   return browser.newPage();
 
 }
