@@ -8,7 +8,7 @@
 const {Storage} = require('@google-cloud/storage');
 const puppeteer = require('puppeteer');
 const uuidv5 = require('uuid/v5');
-const har = require('puppeteer-har');
+const PuppeteerHar = require('puppeteer-har');
 
 //If set to true, take a screenshot and save the HAR trace
 var getTraces = process.env.getTrace;
