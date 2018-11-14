@@ -11,7 +11,7 @@ const uuidv5 = require('uuid/v5');
 const PuppeteerHar = require('puppeteer-har');
 
 //If set to true, take a screenshot and save the HAR trace
-const getTraces = true;
+const getTraces = process.env.getTrace;
 
 // Creates a client
 const storage = new Storage();
@@ -28,7 +28,7 @@ exports.webcheck = async (req, res) => {
   //Generate a timestamp
   const timestamp = Date.now();
   //Declare the path where to store the screenshot and HAR files.
-  if(getTraces){
+  if(getTraces==true){
     const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
     const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
   }
@@ -49,7 +49,7 @@ exports.webcheck = async (req, res) => {
   })
   
   //Start HAR trace
-  if(getTraces){
+  if(getTraces==true){
     const har = new PuppeteerHar(page);
     await har.start({ path: harFile });
   }
@@ -61,19 +61,19 @@ exports.webcheck = async (req, res) => {
   )
   
   //Stop HAR trace
-  if(getTraces){
+  if(getTraces==true){
     await har.stop();
   }
   
   //Take a screenshot
-  if(getTraces){
+  if(getTraces==true){
     await page.screenshot({
       path: img
     })
   }
 
   //Upload data to Google Cloud Storage
-  if(getTraces){
+  if(getTraces==true){
     toStorage(uuid, [harFile,img]);
   }
   
