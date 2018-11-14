@@ -28,10 +28,8 @@ exports.webcheck = async (req, res) => {
   //Generate a timestamp
   const timestamp = Date.now();
   //Declare the path where to store the screenshot and HAR files.
-  if(getTraces){
-    const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
-    const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
-  }
+  const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
+  const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
   
   //Check if the url parameter is set
   if (!url) {
