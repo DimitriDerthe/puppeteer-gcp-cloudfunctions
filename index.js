@@ -28,10 +28,8 @@ exports.webcheck = async (req, res) => {
   //Generate a timestamp
   const timestamp = Date.now();
   //Declare the path where to store the screenshot and HAR files.
-  if(getTraces==true){
-    const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
-    const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
-  }
+  const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
+  const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
   
   //Check if the url parameter is set
   if (!url) {
@@ -49,10 +47,8 @@ exports.webcheck = async (req, res) => {
   })
   
   //Start HAR trace
-  if(getTraces==true){
     const har = new PuppeteerHar(page);
     await har.start({ path: harFile });
-  }
 
   //Start navigation
   await page.goto(url);
@@ -61,21 +57,15 @@ exports.webcheck = async (req, res) => {
   )
   
   //Stop HAR trace
-  if(getTraces==true){
-    await har.stop();
-  }
+  await har.stop();
   
   //Take a screenshot
-  if(getTraces==true){
-    await page.screenshot({
-      path: img
-    })
-  }
+  await page.screenshot({
+    path: img
+  })
 
   //Upload data to Google Cloud Storage
-  if(getTraces==true){
-    toStorage(uuid, [harFile,img]);
-  }
+  toStorage(uuid, [harFile,img]);
   
   //Send performance timing to the client
   res.send(performanceTiming);  
