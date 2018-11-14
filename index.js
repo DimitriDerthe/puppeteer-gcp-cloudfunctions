@@ -10,7 +10,7 @@ const puppeteer = require('puppeteer');
 const uuidv5 = require('uuid/v5');
 
 //If set to true, take a screenshot and save the HAR trace
-var getTraces = process.env.FOO;
+var getTraces = process.env.getTrace;
 if(getTraces){
   const PuppeteerHar = require('puppeteer-har');
 }
