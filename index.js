@@ -11,7 +11,7 @@ const uuidv5 = require('uuid/v5');
 const PuppeteerHar = require('puppeteer-har');
 
 //If set to true, take a screenshot and save the HAR trace
-const getTraces = process.env.getTrace;
+const getTraces = true;
 
 // Creates a client
 const storage = new Storage();
