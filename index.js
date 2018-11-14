@@ -11,7 +11,7 @@ const uuidv5 = require('uuid/v5');
 const PuppeteerHar = require('puppeteer-har');
 
 //If set to true, take a screenshot and save the HAR trace
-var getTraces = process.env.getTrace;
+const getTraces = process.env.getTrace;
 
 // Creates a client
 const storage = new Storage();
@@ -28,8 +28,10 @@ exports.webcheck = async (req, res) => {
   //Generate a timestamp
   const timestamp = Date.now();
   //Declare the path where to store the screenshot and HAR files.
-  const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
-  const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
+  if(getTraces){
+    const img = '/tmp/'+ uuid + '_' + timestamp + '.png';
+    const harFile = '/tmp/' + uuid + '_' + timestamp + '.har';
+  }
   
   //Check if the url parameter is set
   if (!url) {
