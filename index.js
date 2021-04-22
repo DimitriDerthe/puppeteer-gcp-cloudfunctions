@@ -7,10 +7,10 @@
 // Imports the Google Cloud client library
 const {Storage} = require('@google-cloud/storage');
 const puppeteer = require('puppeteer');
-const uuidv5 = require('uuid/v5');
+const uuid = require('md5');
 
 //If set to true, take a screenshot and save the HAR trace
-var getTraces = process.env.FOO;
+var getTraces = process.env.TRACES;
 if(getTraces){
   const PuppeteerHar = require('puppeteer-har');
 }
@@ -26,7 +26,7 @@ exports.webcheck = async (req, res) => {
   //Get URL to test
   const url = req.query.url;
   //Generate an UUID for the url
-  const uuid = uuidv5(url, uuidv5.URL);
+  const uuid = uuid(url);
   //Generate a timestamp
   const timestamp = Date.now();
   //Declare the path where to store the screenshot and HAR files.
