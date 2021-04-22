@@ -8,7 +8,7 @@
     "@google-cloud/storage": "^5.8.4",
     "@types/google-cloud__storage": "^2.3.1",
     "md5": "^2.3.0",
-    "puppeteer": "^9.0.0",
+    "puppeteer": "^1.13.0",
     "puppeteer-har": "^1.0.2"
   }
 }
